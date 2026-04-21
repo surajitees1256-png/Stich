@@ -104,19 +104,19 @@ function Home() {
       </ul>
 
       {/* BANNER */}
-      <div className="relative h-[200px] sm:h-[300px] md:h-[500px] overflow-hidden">
-        <img
-          className="w-full h-full object-cover"
-          src="https://images.pexels.com/photos/7957751/pexels-photo-7957751.jpeg"
-          alt=""
-        />
+      <div className="relative h-[200px] sm:h-[300px] md:h-[500px] lg:h-[600px] xl:h-[800px] overflow-hidden">
+  <img
+    className="w-full h-full object-fill"
+    src="https://images.pexels.com/photos/7957751/pexels-photo-7957751.jpeg"
+    alt=""
+  />
 
-        <div className="absolute inset-0 flex items-center justify-center px-4">
-          <h1 className="text-white text-lg sm:text-2xl md:text-5xl font-bold text-center">
-            Grab Upto 70% OFF on Top Fashion Brands!
-          </h1>
-        </div>
-      </div>
+  <div className="absolute inset-0 flex items-center justify-center px-4">
+    <h1 className="text-white text-lg sm:text-2xl md:text-5xl font-bold text-center">
+      Grab Upto 70% OFF on Top Fashion Brands!
+    </h1>
+  </div>
+</div>
 
       <ShopByBrand />
 
