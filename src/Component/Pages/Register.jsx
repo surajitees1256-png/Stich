@@ -43,7 +43,7 @@ function Register() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/register",
+        "https://stich-backend.vercel.app/api/register",
         formData
       );
 
