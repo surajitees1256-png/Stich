@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // ✅ safer port
+  baseURL: "https://stich-backend.vercel.app/api", // ✅ safer port
   timeout: 10000, // optional safety
 });
 
