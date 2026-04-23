@@ -9,7 +9,7 @@ function MaKeup() {
   const {addToCart}=useCart()
   const getProducts = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}products`);
+      const res = await axios.get("http://localhost:5000/api/products");
       setProducts(res.data.products || res.data);
     } catch (error) {
       console.log("Error fetching products:", error);
