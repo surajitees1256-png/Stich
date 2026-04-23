@@ -22,7 +22,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/login", formData);
+      const res = await axios.post("https://stich-backend.vercel.app/api/login", formData);
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
