@@ -54,7 +54,7 @@ function RegisterProduct() {
       data.append("qty", formData.qty);
 
       const res = await axios.post(
-        "http://localhost:5000/api/product/add",
+        "https://stich-backend.vercel.app/api/product/add",
         data,
         {
           headers: {
