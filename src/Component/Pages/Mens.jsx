@@ -9,12 +9,11 @@ function Mens() {
 
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const URL = import.meta.env.VITE_API_URL
 
   // 🔹 Fetch Products
   const getProducts = async () => {
     try {
-      const res = await API.get(`${URL}/products||http://localhost:5000/api/products`);
+      const res = await API.get("/products");
       setProducts(res.data.products || res.data);
     } catch (error) {
       console.log("Error:", error.message);
@@ -48,21 +47,23 @@ function Mens() {
 
   // 🔹 Add to Cart
   const handleAddToCart = (item) => {
-  const quantity = qty[item._id] ?? 0;
+    const quantity = qty[item._id] ?? 0;
 
-  if (quantity === 0) {
-    alert("Select quantity");
-    return;
-  }
+    if (quantity === 0) {
+      alert("⚠️ Please select quantity");
+      return;
+    }
 
-  addToCart({
-    productId: item._id,
-    name: item.name,
-    price: item.price,
-    image: item.image,
-    quantity,
-  });
-};
+    addToCart({
+      productId: item._id,
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      quantity,
+    });
+
+    console.log("✅ Added to cart");
+  };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">

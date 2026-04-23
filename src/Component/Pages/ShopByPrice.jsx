@@ -12,11 +12,11 @@ function ShopByPrice() {
 
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const URL = import.meta.env.VITE_API_URL;
+
   // ✅ Fetch products
   const getProducts = async () => {
     try {
-      const res = await API.get(`${URL}/products||/products`);
+      const res = await API.get("/products");
       const data = res.data.products || res.data || [];
       setProducts(data);
     } catch (error) {

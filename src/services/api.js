@@ -1,8 +1,8 @@
 // src/services/api.js
 import axios from "axios";
-const URL = import.meta.env.VITE_API_URL;
+
 const API = axios.create({
-  baseURL: `${URL}||http://localhost:5000/api`, // ✅ safer port
+  baseURL: "http://localhost:5000/api", // ✅ safer port
   timeout: 10000, // optional safety
 });
 

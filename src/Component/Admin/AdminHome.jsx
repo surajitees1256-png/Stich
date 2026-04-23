@@ -6,19 +6,17 @@ function AdminHome() {
   const [editId, setEditId] = useState(null);
   const [editValues, setEditValues] = useState({});
 
+  // ✅ Get token once
   const token = localStorage.getItem("token");
-  const URL = import.meta.env.VITE_API_URL
+
   // ✅ GET PRODUCTS
   const getProducts = async () => {
     try {
-      const res = await axios.get(
-        `${URL}/products||http://localhost:5000/api/products`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get("http://localhost:5000/api/products", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setProducts(res.data.products || res.data);
     } catch (error) {
@@ -27,26 +25,19 @@ function AdminHome() {
   };
 
   useEffect(() => {
-    if (token) {
-      getProducts();
-    }
-  }, [token]);
+    getProducts();
+  }, []);
 
   // ✅ DELETE PRODUCT
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/product/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`http://localhost:5000/api/product/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      setProducts((prev) =>
-        prev.filter((item) => item._id !== id)
-      );
+      setProducts((prev) => prev.filter((item) => item._id !== id));
     } catch (error) {
       console.log("Delete error:", error.response?.data || error.message);
     }
@@ -87,13 +78,12 @@ function AdminHome() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       const updated = products.map((item) =>
-        item._id === id ? res.data.product : item
+        item._id === id ? res.data.product : item,
       );
 
       setProducts(updated);
@@ -105,9 +95,7 @@ function AdminHome() {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-3xl font-bold text-center mb-6">
-        Product Dashboard
-      </h2>
+      <h2 className="text-3xl font-bold text-center mb-6">Product Dashboard</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((item) => (
@@ -116,23 +104,11 @@ function AdminHome() {
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
           >
             {/* IMAGE */}
-            <div className="h-48 bg-gray-100 flex items-center justify-center relative">
-              <img
-                src={item.image || "https://via.placeholder.com/150"}
-                alt=""
-                className="h-full object-contain"
-              />
-
-              {/* 🔥 LOW STOCK BADGE */}
-              {item.qty < 10 && (
-                <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                  Low Stock ⚠️
-                </span>
-              )}
+            <div className="h-48 bg-gray-100 flex items-center justify-center">
+              <img src={item.image} alt="" className="h-full object-contain" />
             </div>
 
             <div className="p-4">
-
               {/* EDIT MODE */}
               {editId === item._id ? (
                 <>
@@ -167,12 +143,11 @@ function AdminHome() {
                     className="w-full mb-2 p-2 border rounded"
                     placeholder="Brand"
                   />
-
                   <select
                     name="category"
                     value={editValues.category || ""}
                     onChange={handleChange}
-                    className="w-full mb-2 p-2 border rounded"
+                    className="w-full p-2 border rounded-lg"
                   >
                     <option value="">Select Category</option>
                     <option>Mens</option>
@@ -182,7 +157,6 @@ function AdminHome() {
                     <option>Makeup</option>
                     <option>Accessories</option>
                   </select>
-
                   <input
                     name="description"
                     value={editValues.description || ""}
@@ -225,18 +199,9 @@ function AdminHome() {
                     {item.name}
                   </h3>
 
-                  {/* CATEGORY BADGE */}
-                  <span className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded">
-                    {item.category}
-                  </span>
+                  <p className="text-gray-500 text-sm">{item.brand}</p>
 
-                  <p className="text-gray-500 text-sm mt-1">
-                    {item.brand}
-                  </p>
-
-                  <p className="text-gray-500 text-sm">
-                    {item.description}
-                  </p>
+                  <p className="text-gray-500 text-sm">{item.description}</p>
 
                   <p className="text-green-600 font-bold text-lg mt-1">
                     ₹{item.price}
@@ -263,7 +228,6 @@ function AdminHome() {
                   </div>
                 </>
               )}
-
             </div>
           </div>
         ))}
