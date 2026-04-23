@@ -7,12 +7,12 @@ function AdminHome() {
   const [editValues, setEditValues] = useState({});
 
   const token = localStorage.getItem("token");
-
+  const URL = import.meta.env.VITE_API_URL
   // ✅ GET PRODUCTS
   const getProducts = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/products",
+        `${URL}/products||http://localhost:5000/api/products`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

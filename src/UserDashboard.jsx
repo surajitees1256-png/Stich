@@ -15,6 +15,7 @@ import Brands from "./Component/Brands";
 import DetailPage from "./Component/Pages/DetailPage";
 import CartPage from "./Component/Pages/CartPage";
 import SearchPage from "./Component/Pages/SearchPage";
+import Footer from "./Component/Footer";
 
 function UserDashboard() {
   const location = useLocation();
@@ -47,6 +48,8 @@ function UserDashboard() {
          <Route path="/cart" element={<CartPage/>} />
          <Route path="/search" element={<SearchPage/>} />
       </Routes>
+      {/* ✅ Conditional Navbar */}
+      {!hideNavbar && <Footer/>}
     </>
   );
 }

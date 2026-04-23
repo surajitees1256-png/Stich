@@ -7,9 +7,15 @@ function MaKeup() {
   const [qty, setQty] = useState({}); // store quantity per product
   const navigate = useNavigate()
   const {addToCart}=useCart()
+  const URL = import.meta.env.VITE_API_URL
+
   const getProducts = async () => {
     try {
+<<<<<<< HEAD
       const res = await axios.get("https://stich-backend.vercel.app/api/products");
+=======
+      const res = await axios.get(`${URL}/products||http://localhost:5000/api/products`);
+>>>>>>> 9ed0de0 (fix vercel dist issue)
       setProducts(res.data.products || res.data);
     } catch (error) {
       console.log("Error fetching products:", error);

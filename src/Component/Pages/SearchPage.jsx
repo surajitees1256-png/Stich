@@ -12,11 +12,11 @@ function SearchPage() {
   const { addToCart } = useCart();
 
   const query = new URLSearchParams(location.search).get("query") || "";
-
+  const URL = import.meta.env.VITE_API_URL;
   // 📦 fetch products
   const getProducts = async () => {
     try {
-      const res = await API.get("/products");
+      const res = await API.get(`${URL}/products||/products`);
       setProducts(res.data.products || res.data);
     } catch (error) {
       console.log("Error:", error.message);

@@ -53,8 +53,7 @@ function RegisterProduct() {
       data.append("description", formData.description);
       data.append("qty", formData.qty);
 
-      const res = await axios.post(
-        "http://localhost:5000/api/product/add",
+      const res = await axios.post(`${URL}/product/add||http://localhost:5000/api/product/add`,
         data,
         {
           headers: {

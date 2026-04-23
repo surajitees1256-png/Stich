@@ -9,11 +9,12 @@ function Mens() {
 
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const URL = import.meta.env.VITE_API_URL
 
   // 🔹 Fetch Products
   const getProducts = async () => {
     try {
-      const res = await API.get("/products");
+      const res = await API.get(`${URL}/products||http://localhost:5000/api/products`);
       setProducts(res.data.products || res.data);
     } catch (error) {
       console.log("Error:", error.message);
