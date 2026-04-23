@@ -6,21 +6,37 @@ import { useCart } from "../../context/CartContext";
 function SearchPage() {
   const [products, setProducts] = useState([]);
   const [qty, setQty] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const location = useLocation();
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // 🔍 get query from URL
-  const query = new URLSearchParams(location.search).get("query") || "";
+  const query =
+    new URLSearchParams(location.search).get("query") || "";
 
-  // 📦 fetch products
+  // ✅ SAFE FETCH
   const getProducts = async () => {
     try {
-      const res = await API.get("/products");
-      setProducts(res.data.products || res.data);
+      setLoading(true);
+
+      const res = await API.get(`/products`);
+      console.log("API:", res.data);
+
+      const data = res.data;
+
+      const safeProducts = Array.isArray(data)
+        ? data
+        : Array.isArray(data.products)
+        ? data.products
+        : [];
+
+      setProducts(safeProducts);
     } catch (error) {
       console.log("Error:", error.message);
+      setProducts([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,16 +44,18 @@ function SearchPage() {
     getProducts();
   }, []);
 
-  // 🔍 filter products by search query
-  const filteredProducts = products.filter((item) =>
-    item.name?.toLowerCase().includes(query.toLowerCase())
-  );
+  // ✅ SAFE FILTER
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((item) => {
+        const name = item.name?.toLowerCase() || "";
+        const brand = item.brand?.toLowerCase() || "";
+        const q = query.toLowerCase();
 
-    const filteredProductsbybrand = products.filter((item) =>
-    item.brand?.toLowerCase().includes(query.toLowerCase())
-  );
+        return name.includes(q) || brand.includes(q);
+      })
+    : [];
 
-  // ➕ qty increase
+  // qty
   const increase = (id) => {
     setQty((prev) => ({
       ...prev,
@@ -45,7 +63,6 @@ function SearchPage() {
     }));
   };
 
-  // ➖ qty decrease
   const decrease = (id) => {
     setQty((prev) => ({
       ...prev,
@@ -53,7 +70,7 @@ function SearchPage() {
     }));
   };
 
-  // 🛒 add to cart
+  // add to cart
   const handleAddToCart = (item) => {
     const quantity = qty[item._id] ?? 0;
 
@@ -77,27 +94,33 @@ function SearchPage() {
         Search Results: "{query}"
       </h1>
 
-      {filteredProducts.length ||filteredProductsbybrand === 0 ? (
+      {/* LOADING */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : filteredProducts.length === 0 ? (
         <p className="text-gray-500">No products found</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts || filteredProductsbybrand.map((item) => (
+          {filteredProducts.map((item) => (
             <div
               key={item._id}
               className="bg-white rounded-xl shadow-md p-4"
             >
-              {/* IMAGE */}
               <img
                 src={item.image}
                 alt={item.name}
                 className="h-40 w-full object-contain"
               />
 
-              {/* DETAILS */}
-              <h2 className="font-semibold mt-2">{item.name}</h2>
-              <p className="text-green-600 font-bold">₹{item.price}</p>
+              <h2 className="font-semibold mt-2">
+                {item.name}
+              </h2>
+              <p className="text-gray-500">{item.brand}</p>
+              <p className="text-green-600 font-bold">
+                ₹{item.price}
+              </p>
 
-              {/* QTY */}
+              {/* qty */}
               <div className="flex items-center gap-2 mt-2">
                 <button
                   onClick={() => decrease(item._id)}
@@ -116,7 +139,7 @@ function SearchPage() {
                 </button>
               </div>
 
-              {/* ACTIONS */}
+              {/* actions */}
               <button
                 onClick={() => handleAddToCart(item)}
                 className="w-full mt-2 bg-yellow-500 text-white py-1 rounded"
@@ -125,7 +148,9 @@ function SearchPage() {
               </button>
 
               <button
-                onClick={() => navigate(`/detail/${item._id}`)}
+                onClick={() =>
+                  navigate(`/detail/${item._id}`)
+                }
                 className="w-full mt-2 bg-black text-white py-1 rounded"
               >
                 View Detail
